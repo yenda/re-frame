@@ -2,8 +2,7 @@
   (:require [re-frame.events  :refer [handle]]
             [re-frame.interop :refer [after-render empty-queue next-tick]]
             [re-frame.loggers :refer [console]]
-            [re-frame.trace   :as trace :include-macros true]
-            #?(:cljs [react-native :as ReactNative])))
+            [re-frame.trace   :as trace :include-macros true]))
 
 
 ;; -- Router Loop ------------------------------------------------------------
@@ -64,8 +63,7 @@
 ;; Events can have metadata which says to pause event processing.
 ;; event metadata -> "run later" functions
 (def later-fns
-  {:flush-dom #?(:clj (fn [f] (after-render #(next-tick f)))
-                 :cljs (fn [f] (.runAfterInteractions ReactNative/InteractionManager f))) ;; one tick after the end of the next annimation frame
+  {:flush-dom (fn [f] (after-render #(next-tick f))) ;; one tick after the end of the next annimation frame
    :yield     next-tick})               ;; almost immediately
 
 
